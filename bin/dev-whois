@@ -1,0 +1,33 @@
+#!/usr/bin/env node
+
+var dev = require('..');
+var chalk = require('chalk');
+var cmd = require('commander');
+var whois = require('node-whois');
+
+
+cmd.parse(process.argv);
+
+var domains = cmd.args;
+
+if (!domains.length) {
+  console.error('[domain] required');
+  process.exit(1);
+}
+
+domains.forEach(function(domain){
+
+    console.info("Whois %s?", chalk.blue(domain) );
+
+    whois.lookup(domain, function(err, data){
+
+        if(err) {
+            console.error('Error looking up %s: ', chalk.blue(domain), err );
+            return;
+        }
+
+        console.log(chalk.yellow(data));
+    });
+});
+
+

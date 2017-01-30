@@ -1,0 +1,31 @@
+# composer
+composer global require laravel/homestead
+
+# node
+npm install -g bower --save
+npm install -g gulp --save
+
+
+# ruby
+gem update --system
+gem install compass
+
+# atom
+
+apm install atom-material-ui atom-material-syntax
+apm install monokai
+
+apm install git-plus
+apm install project-manager
+apm install emmet
+apm install docblockr
+apm install atom-beautify
+apm install pretty-json
+
+apm install multi-cursor
+apm install tool-bar
+apm install tool-bar-main
+apm install line-ending-converter
+
+apm install language-blade
+apm install language-dotenv

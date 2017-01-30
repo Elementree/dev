@@ -1,0 +1,14 @@
+#!/usr/bin/env node
+
+const child_process = require('child_process');
+
+var dev = require('..');
+
+const path = require('path');
+const fs = require('fs');
+
+console.log('Checking your local dev environment');
+
+console.log();
+console.log('Done!');
+

@@ -1,0 +1,183 @@
+#!/usr/bin/env node
+
+var speedTest = require('speedtest-net');
+var ProgressBar = require('progress');
+
+var dev = require('..');
+var chalk = require('chalk');
+var cmd = require('commander');
+
+
+cmd.parse(process.argv);
+
+// var domains = cmd.args;
+
+// speedTest.visual({
+//     maxTime: 5000,
+//     log: true,
+//     //pingCount: 3,
+//     //maxServers: 2
+// }, function(err, data) {
+//   console.dir(data);
+// });
+
+var test = speedTest({maxTime: 10000});
+var dlbar = new ProgressBar('Download  [:bar] :percent', { total: 100 });
+var ulbar = new ProgressBar('Upload    [:bar] :percent', { total: 100 });
+var lastDlProgress = 0;
+var lastUlProgress = 0;
+
+
+test.on('error', function(err) {
+  console.error(chalk.red("OOPS! " + err));
+});
+
+
+// 1
+test.on('config', function(config) {
+//   console.log(
+//       chalk.magenta( JSON.stringify(config) )
+//     );
+
+  console.log( chalk.bold.yellow('Client Test Config') );
+
+  console.log( chalk.yellow( "  IP %s " ), config.client.ip );
+  console.log( chalk.yellow( "  ISP %s " ), config.client.isp );
+  console.log( chalk.yellow( "  Coordinates %s %s : https://www.google.com/maps/preview/@%s,%s,8z" ), 
+      config.client.lat, 
+      config.client.lon, 
+      config.client.lat, 
+      config.client.lon 
+      );
+
+  console.log( chalk.bold.yellow('Download Test Config') );
+
+  console.log( chalk.yellow( "  Test Time %ss " ), config.download.testlength );
+  console.log( chalk.yellow( "  Test Size initial=%s min=%s threads=%s " ), 
+                config.download.initialtest, 
+                config.download.mintestsize, 
+                config.download.threadsperurl
+                );
+
+  console.log( chalk.bold.yellow('Upload Test Config') );
+
+  console.log( chalk.yellow( "  Test Time %ss " ), config.upload.testlength );
+  console.log( chalk.yellow( "  Test Size initial=%s min=%s threads=%s " ), 
+                config.upload.initialtest, 
+                config.upload.mintestsize, 
+                config.upload.threadsperurl
+                );
+
+  console.log();
+
+});
+
+test.on('bestservers', function(servers) {
+  console.log( chalk.bold.yellow( 'Closest servers:' ));
+
+  for(i = 0; i < servers.length; i++){
+
+      console.log( chalk.yellow( "  %s, %s, %s, %s, distance=%s, ping=%s" ), 
+            servers[i].host,
+            servers[i].sponsor,
+            servers[i].name,
+            servers[i].cc,
+            servers[i].dist.toFixed(2) + "km",
+            servers[i].bestPing.toFixed(2) + "ms"
+      );
+
+  }
+
+  console.log();
+
+  //console.dir(servers);
+});
+
+
+test.on('testserver', function(server) {
+  console.log( chalk.bold.yellow('Using test server:' ));
+
+    console.log( chalk.yellow( "  %s, %s, %s, %s, distance=%s, ping=%s" ), 
+        server.host,
+        server.sponsor,
+        server.name,
+        server.cc,
+        server.dist.toFixed(2) + "km",
+        server.bestPing.toFixed(2) + "ms"
+    );
+
+    console.log();
+
+//   console.dir(server);
+});
+
+test.on('downloadspeed', function(speed) {
+  console.log(
+      chalk.bold.cyan('Download speed: ') + chalk.cyan('%s Mb/s'), speed.toFixed(3)
+  );
+  console.log();
+
+//   console.dir(speed);
+});
+
+test.on('uploadspeed',function(speed){
+  console.log(
+      chalk.bold.cyan('Upload speed: ') + chalk.cyan('%s Mb/s'), speed.toFixed(3)
+  );
+  console.log();
+//   console.dir(speed);
+});
+
+// test.on('downloadspeedprogress', function(speed) {
+//   console.log('Download speed (in progress):', (speed / 1000).toFixed(2), 'KB/s');
+// });
+
+// test.on('uploadspeedprogress', function(speed) {
+//   console.log('Upload speed (in progress):', (speed / 1000).toFixed(2), 'KB/s');
+// });
+
+test.on('downloadprogress', function(progress) {
+  //console.log('Download progress:', chalk.blue(progress) );
+  dlbar.tick(progress - lastDlProgress);
+  lastDlProgress = progress;
+});
+
+test.on('uploadprogress', function(progress) {
+//   console.log('Upload progress:', chalk.blue(progress));
+  ulbar.tick(progress - lastUlProgress);
+  lastUlProgress = progress;
+  
+});
+
+test.on('data', function(data) {
+
+  console.log( chalk.bold.green("Test result:") );
+
+  console.log( chalk.green("  Download Speed     %s Mb/s"), data.speeds.download );
+  console.log( chalk.green("  Upload Speed       %s Mb/s"), data.speeds.upload );
+
+  console.log();
+
+
+//   console.log(
+//       chalk.yellow( JSON.stringify(data) )
+//     );
+});
+
+test.on('result', function(url) {
+  if (!url) {
+    console.log('Could not successfully post test results.');
+  } else {
+    console.log('Test result url:', url);
+  }
+});
+
+console.log( chalk.green('Running speedtest...'))
+console.log();
+
+
+// test.on('servers', function(servers) {
+ // console.log('Complete list of all available servers:');
+  //console.dir(servers);
+// });
+

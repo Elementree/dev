@@ -1,0 +1,203 @@
+#!/usr/bin/env node
+
+var dev = require('..');
+
+const path = require('path');
+var filesystem = require('file-system');
+var fs = require('fs');
+var chalk = require('chalk');
+
+var prompt = require('prompt');
+const gitconfig = require('gitconfig');
+ 
+dev.console.h1("Installing Dev...");
+
+var gitConfigFilePath = path.join( dev.paths.home, '/.gitconfig' );
+var bashProfileFilePath = path.join( dev.paths.home, '/.bash_profile' );
+var homesteadYamlFilePath = path.join( dev.paths.dev_homestead, '/Homestead.yaml' );
+var homesteadYamlExampleFilePath = path.join( dev.paths.dev_homestead, '/Homestead.example.yaml' );
+
+const os = require('os');
+
+function installGitConfig(callback){
+    dev.console.h1("Looking at you Git config...");
+
+    gitconfig.get({
+        location: 'global'
+    }).then((config) => {
+        console.log(config);
+
+        dev.promptConfirm('Would you like to edit your global .gitconfig?', function(doEdit){
+            if(doEdit){ 
+                editGitConfig(function(){
+                    echoGitConfig(callback);
+                });
+            }else{
+                callback();
+            }
+        });
+
+    }).catch(function(err){
+        dev.console.warn("Your global .gitconfig does not exist or is not accessible...");
+        editGitConfig(function(){
+            echoGitConfig(callback);
+        });
+    });
+
+}
+
+function editGitConfig(callback){
+
+    prompt.start();
+    prompt.get(
+        {
+            message: '.gitconfig',
+            properties: {
+                fullName: {
+                    description: 'Enter your full name',
+                    type: 'string',
+                    required: true,
+                },
+                email: {
+                    description: 'Enter your email',
+                    type: 'string',
+                    required: true,
+                }
+            }
+        }, 
+        function (err, result) {
+
+            createGitConfig(result.fullName, result.email, function(){
+                callback();
+            });
+
+        }
+    );
+
+}
+
+function createGitConfig(fullName, email, callback){
+
+    gitconfig.set(
+        {
+            'user.email': email,
+            'user.name': fullName,
+            'push.default': 'simple',
+            'core.autocrlf': 'false',
+            'core.safecrlf': 'warn',
+        },
+        {
+            location: 'global'
+        }
+    ).then(callback);
+
+}
+
+function echoGitConfig(callback){
+
+    gitconfig.get({
+        location: 'global'
+    }).then((config) => {
+        console.log(config);
+        callback();
+    });
+}
+
+
+function installBashProfile(callback){
+    dev.console.h1("Looking at you Bash profile...");
+
+    echoBashProfile(function(profile){
+
+        if(profile === false){
+            createBashProfile(function(){
+                echoBashProfile(callback);
+            });
+        }else{
+            dev.promptConfirm('Would you like to regenerate your global .bash_profile?', function(doEdit){
+                if(doEdit){
+                    createBashProfile(function(){
+                        echoBashProfile(callback);
+                    });
+                }else{
+                    callback();
+                }
+            });
+        }
+
+    });
+
+}
+
+function echoBashProfile(callback){
+    fs.readFile(bashProfileFilePath, 'utf8', function(err, data){
+        if(err) return callback(false);
+        console.log(data);
+        callback(data);
+    });
+}
+
+function createBashProfile(callback){
+
+    var content = 'export DEV_PATH="' + dev.paths.dev + '"\r\n';
+    content += 'if [ -f $DEV_PATH/home/user/.dev ]; then . $DEV_PATH/home/user/.dev; fi';
+
+    fs.writeFile(bashProfileFilePath, content, function(err){
+        if(err) throw err;
+        dev.console.success('Global .bash_profile updated!');
+        callback();
+    });
+
+}
+
+
+function installHomesteadConfig(callback){
+    dev.console.h1("Looking at your Homestead.yaml...");
+
+    echoHomesteadConfig(function(homestead){
+
+        if(homestead === false){
+            createHomesteadConfig(function(){
+                echoHomesteadConfig(callback);
+            });
+        }else{
+            dev.promptConfirm('Would you like to regenerate your Homestead.yaml?', function(doEdit){
+                if(doEdit){
+                    createHomesteadConfig(function(){
+                        echoHomesteadConfig(callback);
+                    });
+                }
+            });
+        }
+
+    });
+
+    
+}
+
+
+function echoHomesteadConfig(callback){
+    fs.readFile(homesteadYamlFilePath, 'utf8', function(err, data){
+        if(err) return callback(false);
+        console.log(data);
+        callback(data);
+    });
+}
+
+function createHomesteadConfig(callback){
+    fs.readFile(homesteadYamlExampleFilePath, 'utf8', function(err, data){
+        if(err) throw err;
+        fs.writeFile(homesteadYamlFilePath, data, function(err){
+            if(err) throw err;
+            dev.console.success('Homestead.yaml created from stub!');
+            callback();
+        });
+    });
+}
+
+
+installGitConfig(function(){
+    installBashProfile(function(){
+        installHomesteadConfig(function(){});
+    });
+});

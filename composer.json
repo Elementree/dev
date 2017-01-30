@@ -1,0 +1,12 @@
+{
+    "name": "christiaan/dev",
+    "authors": [
+        {
+            "name": "Christiaan Lombard",
+            "email": "base1.christiaan@gmail.com"
+        }
+    ],
+    "require": {
+        "laravel/homestead": "^4"
+    }
+}

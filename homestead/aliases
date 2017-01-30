@@ -1,0 +1,9 @@
+alias gl='git log --oneline --all --graph --decorate --date=short'
+alias glp='git log --pretty=format:"%C(yellow)%h%m %ad%Cred%d %Creset%s%Cgreen [%cn]" --decorate --date=short'
+alias gldate='git log --graph --pretty=format:"%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset" --abbrev-commit'
+
+alias gs='git status '
+alias gaa='git add --all'
+alias gc='git commit -m '
+alias gpl='git pull '
+alias gps='git push '

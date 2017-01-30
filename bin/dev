@@ -1,0 +1,18 @@
+#!/usr/bin/env node
+
+var dev = require('..');
+var cmd = require('commander');
+var chalk = require('chalk');
+
+
+cmd.command('hello', 'Display dev welcome message', {isDefault: true})
+   .command('info', 'Display dev environment info')
+   .command('install', 'Install dev environment')
+   .command('whois [domain]', 'Check domain whois info')
+   .command('speedtest', 'Check internet connection speed via speedtest.net')
+   ;
+
+cmd.parse(process.argv);
+
+
+

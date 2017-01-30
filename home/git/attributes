@@ -1,0 +1,4 @@
+*.java text eol=crlf
+*.php text eol=lf
+*.gitignore text eol=lf
+*.gitattributes text eol=lf
