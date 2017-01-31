@@ -15,7 +15,8 @@ exports.paths = {
     dev: __dirname,
     dev_home: path.join( __dirname, '/home' ),
     dev_homestead: path.join( __dirname, '/homestead' ),
-    cwd: process.cwd()
+    cwd: process.cwd(),
+    project_home: path.join( __dirname, '/..' )
 };
 
 
@@ -27,6 +28,10 @@ exports.compareFiles = function (file1, file2){
 
 };
 
+exports.getDirectories = function (srcpath){
+  return fs.readdirSync(srcpath)
+    .filter(file => fs.statSync(path.join(srcpath, file)).isDirectory());
+};
 
 exports.promptConfirm = function(message, callback){
     prompt.start();

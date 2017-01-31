@@ -15,6 +15,7 @@ alias gpl='git pull '
 alias gps='git push '
 
 alias devhosts='vim /c/Windows/System32/drivers/etc/hosts'
+alias devhomestead='vim $DEV_PATH/homestead/Homestead.yaml'
 
 function devm() {
     ( cd $DEV_PATH && vagrant $* )

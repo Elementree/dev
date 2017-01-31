@@ -4,6 +4,9 @@ var dev = require('..');
 var cmd = require('commander');
 var chalk = require('chalk');
 
+cmd.version('1.0.0');
+
+
 
 cmd.command('hello', 'Display dev welcome message', {isDefault: true})
    .command('info', 'Display dev environment info')
@@ -11,6 +14,29 @@ cmd.command('hello', 'Display dev welcome message', {isDefault: true})
    .command('whois [domain]', 'Check domain whois info')
    .command('speedtest', 'Check internet connection speed via speedtest.net')
    ;
+   
+cmd.on('--help', function(){
+
+
+    console.log(chalk.green("  git aliases"));
+    console.log();
+    console.log(chalk.green("    gl        ") + "'git log --oneline --all --graph --decorate --date=short'");
+    console.log(chalk.green("    glp       ") + "'git log --pretty=format:\"%C(yellow)%h%m %ad%Cred%d %Creset%s%Cgreen [%cn]\" --decorate --date=short'");
+    console.log(chalk.green("    gldate    ") + "'git log --graph --pretty=format:\"%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset\" --abbrev-commit'");
+    console.log(chalk.green("    gs        ") + "'git status '");
+    console.log(chalk.green("    gaa       ") + "'git add --all'");
+    console.log(chalk.green("    gc        ") + "'git commit -m '");
+    console.log(chalk.green("    gpl       ") + "'git pull '");
+    console.log(chalk.green("    gps       ") + "'git push '");
+
+
+    console.log();
+    console.log(chalk.green("  vim aliases"));
+    console.log();
+    console.log(chalk.green("    devhosts      ") + "'vim /c/Windows/System32/drivers/etc/hosts'");
+    console.log(chalk.green("    devhomestead  ") + "'vim $DEV_PATH/homestead/Homestead.yaml'");
+
+});
 
 cmd.parse(process.argv);
 

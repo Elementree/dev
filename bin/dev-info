@@ -6,9 +6,65 @@ var dev = require('..');
 
 const path = require('path');
 const fs = require('fs');
+var glob = require("glob");
+var chalk = require("chalk");
 
 console.log('Checking your local dev environment');
 
-console.log();
+
+
+
+
+function listProjects(){
+    var organizations = dev.getDirectories(dev.paths.project_home);
+
+    organizations.forEach(function(org){
+
+        var orgRoot = dev.paths.project_home + '/' + org;
+
+        console.log("  %s %s", chalk.blue.bold(org), chalk.yellow(orgRoot));
+
+        console.log();
+
+        var projects = dev.getDirectories(orgRoot);
+
+        projects.forEach(function(project){
+
+            var projectRoot = orgRoot + '/' + project;
+
+            var hasNpm = false;
+            var hasNodeModules = false;
+            var hasComposer = false;
+            var hasVendorModules = false;
+            var hasGit = false;
+            var hasGulp = false;
+
+            fs.readdirSync(projectRoot).forEach(function(projectFile){
+                if(projectFile === 'package.json') hasNpm = true;
+                if(projectFile === 'composer.json') hasComposer = true;
+                if(projectFile === '.git') hasGit = true;
+                if(projectFile === 'gulpfile.js') hasGulp = true;
+                if(projectFile === 'node_modules') hasNodeModules = true;
+                if(projectFile === 'vendor') hasVendorModules = true;
+            });
+
+            console.log("    %s %s%s%s%s", 
+                            chalk.bold(project), 
+                            hasGulp ? chalk.bgWhite.black(' GIT ') : '',
+                            hasComposer ? chalk.bgBlue(' COMPOSER ' + (hasVendorModules ? '+' : '-')) : '', 
+                            hasNpm ? chalk.bgGreen.black(' NPM ' + (hasNodeModules ? '+' : '-')) : '',
+                            hasGulp ? chalk.bgRed(' GULP ') : ''
+                        );
+        });
+
+        console.log();
+
+    });
+
+
+}
+
+listProjects();
+
 console.log('Done!');
 
