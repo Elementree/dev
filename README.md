@@ -3,6 +3,12 @@
 My personal development environment helpers.
 
 
+## Update NodeJS and NPM on Windows
+
+See [npm-windows-upgrade](https://github.com/felixrieseberg/npm-windows-upgrade)
+
+
+
 # Features
 
   - Setup directory structure
