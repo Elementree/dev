@@ -1,6 +1,118 @@
 # DEV
 
-My personal development environment helpers.
+Development environment helpers for windows.
+
+
+## Installation
+
+Assuming D:\ is your dev drive. Run console command using a Bash console within ConEmu.
+
+
+1. Downloads:
+
+ - [Git](https://git-scm.com/downloads)
+ - [ConEmu](https://conemu.github.io/en/Downloads.html)
+ - [PHP](http://windows.php.net/download/)
+ - [VirtualBox]()
+ - [Vagrant](https://www.vagrantup.com/downloads.html)
+ - [VSCode](https://code.visualstudio.com/download)
+ - [NodeJS](https://nodejs.org/en/download/)
+ - [Composer](https://getcomposer.org/download/)
+
+2. Install in the folloing order: Git, NodeJS, ConEmu, VirtualBox, Vagrant, VSCode
+
+3. Extract php to D:\php, and add this folder to your PATH.
+
+4. Install Composer
+
+5. Generate an SSH keypair
+```sh
+ssh-keygen
+# follow the prompts
+```
+
+6. Add your SSH public key to your Github account
+
+7. Create a `D:\dev` folder
+```sh
+cd /d
+# you are in /d
+mkdir dev
+```
+8. Clone this repo into `D:\dev\dev`
+```sh
+cd dev
+# you are in /d/dev
+git clone git@github.com:elementree/dev
+```
+
+9. Install packages for this repo and make it global
+```sh
+cd dev
+# you are in /d/dev/dev
+npm install
+composer install
+npm link
+```
+
+10. Ensure `dev` is installed globally (might require console restart)
+```sh
+dev help
+```
+
+11. Install `dev` to setup your required user files (.bash_profile, .gitconfig)
+```sh
+dev install
+```
+
+13. Import ComEmu settings by importing `D:\dev\dev\home\user\ConEmu.xml`. Restart the console and you should see a `DEV` message and start in the folder `D:\dev`
+
+12. Setup your `Homestead.yaml`
+
+```sh
+devhomestead
+```
+
+ - add the required folder mappings eg. `map: D:\dev\testiclats to: /home/vagrant/testiclats`
+ - add the required nginx site mappings, eg. `map: test.dev to: /home/vagrant/testiclats/some-laravel-site/public`
+ - add the required databases
+
+13. Setup your hosts
+
+```sh
+devhosts
+```
+ - add required hosts, eg: '192.168.10.19    test.dev'
+
+14. Start up your VM aka `/d/dev/dev/vagrant up`
+```
+devm up
+```
+
+
+## Aliases
+
+```sh
+
+alias gl='git log --oneline --all --graph --decorate --date=short'
+alias glp='git log --pretty=format:"%C(yellow)%h%m %ad%Cred%d %Creset%s%Cgreen [%cn]" --decorate --date=short'
+alias gldate='git log --graph --pretty=format:"%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset" --abbrev-commit'
+
+alias gs='git status '
+alias gaa='git add --all'
+alias gc='git commit -m '
+alias gpl='git pull '
+alias gps='git push '
+
+alias devhosts='vim /c/Windows/System32/drivers/etc/hosts'
+alias devhomestead='vim $DEV_PATH/homestead/Homestead.yaml'
+
+function devm() {
+    ( cd $DEV_PATH && vagrant $* )
+}
+```
+
+
 
 
 ## Update NodeJS and NPM on Windows
