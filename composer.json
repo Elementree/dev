@@ -7,6 +7,6 @@
         }
     ],
     "require": {
-        "laravel/homestead": "^5.2"
+        "laravel/homestead": "^6.5"
     }
 }

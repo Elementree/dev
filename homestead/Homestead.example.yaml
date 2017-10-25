@@ -8,7 +8,7 @@ provider: virtualbox
 boot_timeout: 600
 authorize: ~/.ssh/id_rsa.pub
 box: laravel/homestead
-version: 2.1.0
+version: 4.0.0
 
 keys:
     - ~/.ssh/id_rsa
