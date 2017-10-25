@@ -55,7 +55,7 @@ composer install
 npm link
 ```
 
-10. Ensure `dev` is installed globally (might require console restart)
+10. Ensure `dev` is installed globally (requires console restart)
 ```sh
 dev help
 ```
@@ -141,9 +141,42 @@ npm-windows-upgrade --npm-version latest
 The tool will show you a list of all the published and available versions of npm (including pre-release and beta versions). Choose the one you want to install and let it do its thing!
 
 
+## Configure Homestead
+
+Edit your Homestead config
+```
+devhomestead
+```
+
+### Default Ports
+
+ - SSH: 2222 → Forwards To 22
+ - ngrok UI: 4040 → Forwards To 4040
+ - HTTP: 8000 → Forwards To 80
+ - HTTPS: 44300 → Forwards To 443
+ - MySQL: 33060 → Forwards To 3306
+ - PostgreSQL: 54320 → Forwards To 5432
+ - Mailhog: 8025 → Forwards To 8025
 
 
-# Features
+### Sites
+
+```
+sites:
+    - map: symfony2.test
+      to: /home/vagrant/code/Symfony/web
+      type: symfony2
+      schedule: true
+      php: "7.2"
+      params:
+          - key: FOO
+            value: BAR
+```
+
+Types: [`apache`, `laravel`, `proxy`, `silverstripe`, `statamic`,  `symfony2`, `symfony4`]
+
+
+## Features
 
   - Setup directory structure
   - Install portable executables
