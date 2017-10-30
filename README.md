@@ -173,7 +173,7 @@ sites:
             value: BAR
 ```
 
-Types: [`apache`, `laravel`, `proxy`, `silverstripe`, `statamic`,  `symfony2`, `symfony4`]
+Types: [`apache`, `laravel`, `proxy`, `silverstripe`, `statamic`,  `symfony2`, `symfony4`, `spa`]
 
 
 ## Features
