@@ -14,6 +14,7 @@ dev.console.h1("Installing Dev...");
 
 var gitConfigFilePath = path.join( dev.paths.home, '/.gitconfig' );
 var bashProfileFilePath = path.join( dev.paths.home, '/.bash_profile' );
+var bashRcFilePath = path.join( dev.paths.home, '/.bashrc' );
 var homesteadYamlFilePath = path.join( dev.paths.dev_homestead, '/Homestead.yaml' );
 var homesteadYamlExampleFilePath = path.join( dev.paths.dev_homestead, '/Homestead.example.yaml' );
 
@@ -150,6 +151,51 @@ function createBashProfile(callback){
 
 }
 
+function installBashRc(callback){
+    dev.console.h1("Looking at you Bashrc...");
+
+    echoBashRc(function(profile){
+
+        if(profile === false){
+            createBashRc(function(){
+                echoBashRc(callback);
+            });
+        }else{
+            dev.promptConfirm('Would you like to regenerate your global .bashrc?', function(doEdit){
+                if(doEdit){
+                    createBashRc(function(){
+                        echoBashRc(callback);
+                    });
+                }else{
+                    callback();
+                }
+            });
+        }
+
+    });
+
+}
+
+function echoBashRc(callback){
+    fs.readFile(bashRcFilePath, 'utf8', function(err, data){
+        if(err) return callback(false);
+        console.log(data);
+        callback(data);
+    });
+}
+
+function createBashRc(callback){
+
+    var content = 'source ~/.bash_profile';
+
+    fs.writeFile(bashRcFilePath, content, function(err){
+        if(err) throw err;
+        dev.console.success('Global .bashrc updated!');
+        callback();
+    });
+
+}
+
 
 function installHomesteadConfig(callback){
     dev.console.h1("Looking at your Homestead.yaml...");
@@ -198,6 +244,8 @@ function createHomesteadConfig(callback){
 
 installGitConfig(function(){
     installBashProfile(function(){
-        installHomesteadConfig(function(){});
+        installBashRc(function(){
+            installHomesteadConfig(function(){});
+        });
     });
 });
