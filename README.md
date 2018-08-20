@@ -112,7 +112,58 @@ function devm() {
 }
 ```
 
+## VSCode
 
+User settings:
+
+```js
+{
+    "emmet.syntaxProfiles": {
+        "blade": "html"
+    },
+    "window.zoomLevel": 0,
+    "editor.fontSize": 16,
+    "workbench.colorTheme": "Monokai",
+    "workbench.iconTheme": "vs-seti",
+    "files.autoSave": "off",
+    "emmet.triggerExpansionOnTab": true,
+    "extensions.ignoreRecommendations": true,
+    "terminal.integrated.shell.windows": "C:\\Program Files\\Git\\bin\\bash.exe",
+    "terminal.integrated.shellArgs.windows": ["-l"],
+    "git.enableSmartCommit": true,
+    "git.autofetch": true,
+    "explorer.confirmDragAndDrop": false,
+    "cSpell.language": "en-GB",
+    "cSpell.userWords": [
+        "cloudinary",
+        "cultivar",
+        "cultivars",
+    ]
+}
+```
+
+Keybindings:
+
+```js
+[
+    {
+        "key": "ctrl+shift+d",
+        "command": "editor.action.copyLinesDownAction"
+    },
+    {
+        "key": "ctrl+up",
+        "command": "editor.action.moveLinesUpAction"
+    },
+    {
+        "key": "ctrl+down",
+        "command": "editor.action.moveLinesDownAction"
+    },
+    {
+        "key": "ctrl+alt+.",
+        "command": "workbench.action.terminal.focusNext"
+    }
+]
+```
 
 
 ## Update NodeJS and NPM on Windows
