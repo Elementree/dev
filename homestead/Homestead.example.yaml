@@ -1,35 +1,50 @@
----
-ip: "192.168.10.19"
-hostname: devm
-name: devm
+ip: 192.168.10.21
 memory: 2048
 cpus: 1
 provider: virtualbox
-boot_timeout: 600
 authorize: ~/.ssh/id_rsa.pub
+name: devm
+hostname: devm
 box: laravel/homestead
-version: 4.0.0
+version: 6.3.0
 
 keys:
     - ~/.ssh/id_rsa
 
+
+# FOLDERS
+#
+# Lists all of the folders you wish to share 
+# with your Homestead environment. As files within 
+# these folders are changed, they will be kept in 
+# sync between your local machine and the Homestead 
+# environment.
+#
 folders:
-    - map: D:\dev\testiclats
+    - map: 'D:\dev\testiclats'
       to: /home/vagrant/testiclats
 
+# SITES
+#
+# Map a "domain" to a folder on your Homestead environment.
+#
+# Properties:
+#
+# map: {domain}
+# to: {guest folder}
+# type: "apache"|"apigility"|"expressive"|"laravel" (the default)|"proxy"|"silverstripe"|"statamic"|"symfony2"|"symfony4"|"zf"
+# schedule: true|false
+#
 sites:
     - map: dev.dev
       to: /home/vagrant/
 
+
+# DATABASES
+#
 databases:
     - homestead
 
-
-# blackfire:
-#     - id: foo
-#       token: bar
-#       client-id: foo
-#       client-token: bar
 
 # ports:
 #     - send: 50000
@@ -37,3 +52,15 @@ databases:
 #     - send: 7777
 #       to: 777
 #       protocol: udp
+
+# blackfire:
+#     - id: foo
+#       token: bar
+#       client-id: foo
+#       client-token: bar
+
+# zray:
+#  If you've already freely registered Z-Ray, you can place the token here.
+#     - email: foo@bar.com
+#       token: foo
+#  Don't forget to ensure that you have 'zray: "true"' for your site.
