@@ -14,7 +14,7 @@ keys:
     - ~/.ssh/id_rsa
 
 folders:
-    - map: D:\dev\testiclats
+    - map: 'D:\dev\testiclats'
       to: /home/vagrant/testiclats
 
 sites:
